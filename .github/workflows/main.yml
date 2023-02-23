@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ${{ fromJSON(needs.Prebuild.outputs.tests) }}
+        test: ${{ fromJSON('["test1"]') }}
     steps:
       - name: running
         run: echo "running job with ${{ matrix.test }}"
