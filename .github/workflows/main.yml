@@ -37,7 +37,7 @@ jobs:
             echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV           
             echo "All"
           else
-           echo "TESTS='['${{ github.event.inputs.testSuites }}']'" >> $GITHUB_ENV
+           echo "TESTS='[\'${{ github.event.inputs.testSuites }}\']'" >> $GITHUB_ENV
             echo "Single"
           fi
 
