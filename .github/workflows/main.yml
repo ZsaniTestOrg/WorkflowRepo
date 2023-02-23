@@ -42,11 +42,12 @@ jobs:
           fi
 
   Run_TestSuite:
+    needs: [ 'Prebuild' ]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        test: ${{ fromJSON('["test1"]') }}
+        test: ${{fromJSON(needs.Prebuild.outputs.tests)}}
     steps:
       - name: running
         run: echo "running job with ${{ matrix.test }}"
