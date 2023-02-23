@@ -39,7 +39,7 @@ jobs:
             echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV
           fi
           
-          echo $TESTS
+          echo ${{ env.TESTS }}
 
 #   Run_TestSuite:
 #     runs-on: ubuntu-latest
