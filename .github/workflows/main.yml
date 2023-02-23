@@ -28,16 +28,16 @@ jobs:
   Prebuild:
     runs-on: ubuntu-latest
     outputs:
-      tests: ${{ env.TESTS }}
+      tests: ${{ steps.set-matrix.outputs.tests }}
     steps:
       - id: set-matrix
         run: |      
           if [ "${{ inputs.testSuites }}" == "All" ]
           then 
-            echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV           
+            # echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV           
             echo "All"
           else
-           echo "TESTS='[\'${{ github.event.inputs.testSuites }}\']'" >> $GITHUB_ENV
+            echo "::set-output name=tests::${{format('[{0}]',github.event.inputs.testSuites)}}"
             echo "Single"
           fi
 
@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ${{ fromJSON(needs.prebuild.outputs.tests) }}
+        test: ${{ fromJSON(needs.Prebuild.outputs.tests) }}
     steps:
       - name: running
         run: echo "running job with ${{ matrix.test }}"
