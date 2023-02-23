@@ -32,11 +32,13 @@ jobs:
     steps:
       - id: set-matrix
         run: |      
-          if [ ${{ inputs.testSuites }} == "All" ]
+          if [ "${{ inputs.testSuites }}" == "All" ]
           then
             echo "TESTS=${{ github.event.inputs.testSuites }}" >> $GITHUB_ENV
+            echo "All"
           else
             echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV
+            echo "Single"
           fi
           
           echo ${{ env.TESTS }}
