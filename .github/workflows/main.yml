@@ -28,17 +28,18 @@ jobs:
   Prebuild:
     runs-on: ubuntu-latest
     outputs:
-      tests: ${{ steps.set-matrix.outputs.tests }}
+      tests: ${{ env.TESTS }}
     steps:
       - id: set-matrix
-        run: |
-          echo ${{ toJSON(inputs) }}
-          echo ${{ github.event.inputs.testSuites }}
-        
-          if [ ${{ inputs.testSuites }} != "All" ]
+        run: |      
+          if [ ${{ inputs.testSuites }} == "All" ]
           then
-            echo "::set-output name=tests::${{format('[{0}]',github.event.inputs.testSuites)}}"
+            echo "TESTS=${{ github.event.inputs.testSuites }}" >> $GITHUB_ENV
+          else
+            echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV
           fi
+          
+          echo $TESTS
 
 #   Run_TestSuite:
 #     runs-on: ubuntu-latest
