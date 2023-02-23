@@ -33,29 +33,20 @@ jobs:
       - id: set-matrix
         run: |      
           if [ "${{ inputs.testSuites }}" == "All" ]
-          then
+          then 
             echo "TESTS=${{ github.event.inputs.testSuites }}" >> $GITHUB_ENV
             echo "All"
           else
             echo "TESTS=("AnnotationsCurrentBooksTC" "ArchivedBooksHubPageViewTC" "BackToBoardsTC" "BooksSyncingWithUpdatesTC")" >> $GITHUB_ENV
             echo "Single"
           fi
-          
-          echo ${{ env.TESTS }}
 
-#   Run_TestSuite:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         test: ${{fromJSON(needs.prebuild.outputs.tests)}}
-#     with:
-#       Build_Configuration: Debug
-#       Environment: regression01
-#       Executable_To_Copy: Win8_Smoke
-#       Test_Case: ${{ matrix.test }}
-#     secrets:
-#       ARTIFACT_DOWNLOADER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#     steps:
-#       - name: running
-#         run: echo "running job with ${{ matrix.test }}"
+  Run_TestSuite:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test: ${{ needs.prebuild.outputs.tests }}
+    steps:
+      - name: running
+        run: echo "running job with ${{ matrix.test }}"
