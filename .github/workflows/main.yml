@@ -34,7 +34,7 @@ jobs:
         run: |      
           if [ "${{ inputs.testSuites }}" == "All" ]
           then 
-            echo "TESTS='[\"AnnotationsCurrentBooksTC\",\"ArchivedBooksHubPageViewTC\",\"BackToBoardsTC\",\"BooksSyncingWithUpdatesTC\"]'" >> $GITHUB_ENV           
+            echo "TESTS=[\"AnnotationsCurrentBooksTC\",\"ArchivedBooksHubPageViewTC\",\"BackToBoardsTC\",\"BooksSyncingWithUpdatesTC\"]" >> $GITHUB_ENV           
             echo "All"
           else
             echo "TESTS=[\"${{ github.event.inputs.testSuites }}\"]" >> $GITHUB_ENV
