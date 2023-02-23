@@ -1,0 +1,58 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - windowsapp-tests-gha-migration
+  workflow_dispatch:
+    inputs:
+      testSuites:
+        description: 'Test suite to run'
+        required: true
+        default: 'All'
+        type: choice
+        options:
+        - All
+        - AnnotationsCurrentBooksTC
+        - ArchivedBooksHubPageViewTC
+        - BackToBoardsTC
+        - BooksSyncingWithUpdatesTC
+        - CalendarTC
+        - ChangePasswordTC
+        - CommentNotificationTC
+        - CurrentBooksHubPageViewTC
+        - CurrentBooksHubSyncingTC
+        - ExportAnnotationsTC
+
+jobs: 
+  Prebuild:
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.set-matrix.outputs.tests }}
+    steps:
+      - id: set-matrix
+        run: |
+          echo ${{ toJSON(inputs) }}
+          echo ${{ github.event.inputs.testSuites }}
+        
+          if [ ${{ inputs.testSuites }} != "All" ]
+          then
+            echo "::set-output name=tests::${{format('[{0}]',github.event.inputs.testSuites)}}"
+          fi
+
+#   Run_TestSuite:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         test: ${{fromJSON(needs.prebuild.outputs.tests)}}
+#     with:
+#       Build_Configuration: Debug
+#       Environment: regression01
+#       Executable_To_Copy: Win8_Smoke
+#       Test_Case: ${{ matrix.test }}
+#     secrets:
+#       ARTIFACT_DOWNLOADER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#     steps:
+#       - name: running
+#         run: echo "running job with ${{ matrix.test }}"
