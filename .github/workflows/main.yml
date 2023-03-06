@@ -1,9 +1,6 @@
 name: Run Tests
 
 on:
-  push:
-    branches:
-      - windowsapp-tests-gha-migration
   workflow_dispatch:
     inputs:
       testSuites:
@@ -13,41 +10,44 @@ on:
         type: choice
         options:
         - All
-        - AnnotationsCurrentBooksTC
-        - ArchivedBooksHubPageViewTC
-        - BackToBoardsTC
-        - BooksSyncingWithUpdatesTC
-        - CalendarTC
-        - ChangePasswordTC
-        - CommentNotificationTC
-        - CurrentBooksHubPageViewTC
-        - CurrentBooksHubSyncingTC
-        - ExportAnnotationsTC
+        - Test1
+        - Test2
+        - Test3
+        - Test4
+        - Test5
 
 jobs: 
   Prebuild:
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ env.TESTS }}
+      configurations: ${{ env.CONFIGURATIONS }}
     steps:
       - id: set-matrix
         run: |      
+          configFile="config.json"
+
           if [ "${{ inputs.testSuites }}" == "All" ]
           then 
-            echo "TESTS=[\"AnnotationsCurrentBooksTC\",\"ArchivedBooksHubPageViewTC\",\"BackToBoardsTC\",\"BooksSyncingWithUpdatesTC\"]" >> $GITHUB_ENV           
+            echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
+            echo "CONFIGURATIONS=$(jq '.[]' $configFile)" >> $GITHUB_ENV          
             echo "All"
           else
-            echo "TESTS=[\"${{ github.event.inputs.testSuites }}\"]" >> $GITHUB_ENV
+            echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
+            echo "CONFIGURATIONS=$(jq '.[] | select(.name==\"${{ inputs.testSuites }}\")' $configFile)" >> $GITHUB_ENV
             echo "Single"
           fi
+      - run: |
+          echo ${{ env.TESTS }}
+          echo ${{ env.CONFIGURATIONS }}
 
-  Run_TestSuite:
-    needs: [ 'Prebuild' ]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        test: ${{fromJSON(needs.Prebuild.outputs.tests)}}
-    steps:
-      - name: running
-        run: echo "running job with ${{ matrix.test }}"
+  # Run_TestSuite:
+  #   needs: [ 'Prebuild' ]
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       test: ${{fromJSON(needs.Prebuild.outputs.tests)}}
+  #   steps:
+  #     - name: running
+  #       run: echo "running job with ${{ matrix.test }}"
