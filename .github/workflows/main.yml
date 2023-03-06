@@ -31,7 +31,7 @@ jobs:
           configFile="config.json"
 
           cat $configFile
-          jq '.[] | select(.name==\"${{ inputs.testSuites }}\")' $configFile
+          jq '.[] | select(.name=="${{ inputs.testSuites }}")' $configFile
 
 
           if [ "${{ inputs.testSuites }}" == "All" ]
