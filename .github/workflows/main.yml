@@ -42,23 +42,26 @@ jobs:
         run: |
           echo ${{ env.MULTI_LINES_TEXT_ENV_VAR }}  
 
-      # - id: set-matrix
-      #   run: |      
-      #     configFile="config.json"
+      - id: set-matrix
+        run: |      
+          configFile="config.json"
 
-      #     cat $configFile | jq '.[]' | sed -e 's:\":\\":g'
+          cat $configFile | jq '.[]' | sed -e 's:\":\\":g'
 
+          if [ "${{ inputs.testSuites }}" == "All" ]
+          then 
+            echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
 
-      #     if [ "${{ inputs.testSuites }}" == "All" ]
-      #     then 
-      #       echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
-      #       echo "CONFIGURATIONS=$(cat $configFile | jq '.[]' | sed -e 's:\":\\":g')" >> $GITHUB_ENV          
-      #       echo "All"
-      #     else
-      #       echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
-      #       echo "CONFIGURATIONS=$( echo "[ { "name": "Test3", "dataSources": [ "DataSource=1" ] } ]" )" >> $GITHUB_ENV
-      #       echo "Single"
-      #     fi
+            echo "CONFIGURATIONS<<EOF" >> $GITHUB_ENV
+            cat $configFile | jq '.[]' | sed -e 's:\":\\":g' >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+       
+            echo "All"
+          else
+            echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
+            echo "CONFIGURATIONS=$( echo "[ { "name": "Test3", "dataSources": [ "DataSource=1" ] } ]" )" >> $GITHUB_ENV
+            echo "Single"
+          fi
 
         
       # - name: Log output
@@ -66,6 +69,8 @@ jobs:
       #     echo ${{ env.TESTS }}
       #     echo ${{ env.CONFIGURATIONS }}
 
+
+# All: echo "CONFIGURATIONS=$(cat $configFile | jq '.[]' | sed -e 's:\":\\":g')" >> $GITHUB_ENV   
 # echo "CONFIGURATIONS=$( echo "[ { \"name\": \"Test3\", \"dataSources\": [ \"DataSource=1\" ] } ]" )" >> $GITHUB_ENV
 # echo "CONFIGURATIONS=$(jq '.[] | select(.name=="${{ inputs.testSuites }}")' $configFile)" >> $GITHUB_ENV
 
