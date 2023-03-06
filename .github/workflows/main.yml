@@ -23,6 +23,9 @@ jobs:
       tests: ${{ env.TESTS }}
       configurations: ${{ env.CONFIGURATIONS }}
     steps:
+      - name: Checkout BoardsServices Github Repo
+        uses: actions/checkout@v3
+
       - id: set-matrix
         run: |      
           ls
