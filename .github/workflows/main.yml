@@ -29,22 +29,24 @@ jobs:
       - id: set-matrix
         run: |      
           configFile="config.json"
+          jq '.[]' $configFile
 
-          if [ "${{ inputs.testSuites }}" == "All" ]
-          then 
-            echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
-            echo "CONFIGURATIONS=$(jq '.[]' $configFile)" >> $GITHUB_ENV          
-            echo "All"
-          else
-            echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
-            echo "CONFIGURATIONS=$(jq '.[] | select(.name==\"${{ inputs.testSuites }}\")' $configFile)" >> $GITHUB_ENV
-            echo "Single"
-          fi
-
+        
       - name: Log output
         run: |
           echo ${{ env.TESTS }}
           echo ${{ env.CONFIGURATIONS }}
+
+# if [ "${{ inputs.testSuites }}" == "All" ]
+          # then 
+          #   echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
+          #   echo "CONFIGURATIONS=$(jq '.[]' $configFile)" >> $GITHUB_ENV          
+          #   echo "All"
+          # else
+          #   echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
+          #   echo "CONFIGURATIONS=$(jq '.[] | select(.name==\"${{ inputs.testSuites }}\")' $configFile)" >> $GITHUB_ENV
+          #   echo "Single"
+          # fi
 
   # Run_TestSuite:
   #   needs: [ 'Prebuild' ]
