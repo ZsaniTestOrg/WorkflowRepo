@@ -30,8 +30,7 @@ jobs:
         run: |      
           configFile="config.json"
 
-          cat $configFile
-          jq '.[] | select(.name=="${{ inputs.testSuites }}")' $configFile
+          cat $configFile | jq '.[]' | sed -e 's:\":\\":g'
 
 
           if [ "${{ inputs.testSuites }}" == "All" ]
