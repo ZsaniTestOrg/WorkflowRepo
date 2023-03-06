@@ -59,7 +59,11 @@ jobs:
             echo "All"
           else
             echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
-            echo "CONFIGURATIONS=$( echo "[ { "name": "Test3", "dataSources": [ "DataSource=1" ] } ]" )" >> $GITHUB_ENV
+
+            echo "CONFIGURATIONS<<EOF" >> $GITHUB_ENV
+            cat $configFile | jq '.[] | select(.name=="${{ inputs.testSuites }}")' >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+
             echo "Single"
           fi
 
