@@ -40,7 +40,7 @@ jobs:
           
       - name: Using the previously defined environment variable
         run: |
-          echo ${{ env.ONE_LINE_TEXT_ENV_VAR }}
+          echo ${{ env.MULTI_LINES_TEXT_ENV_VAR }}  
 
       # - id: set-matrix
       #   run: |      
