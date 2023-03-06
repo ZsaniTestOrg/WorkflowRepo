@@ -76,4 +76,4 @@ jobs:
         configurations: ${{fromJSON(needs.Prebuild.outputs.configurations)}}
     steps:
       - name: running
-        run: echo "running job with datasources  ${{ join(${{ matrix.configurations.dataSources }}) }} 
+        run: echo "running job with datasources  ${{ join(matrix.configurations.dataSources) }} 
