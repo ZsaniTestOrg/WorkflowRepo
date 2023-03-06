@@ -25,6 +25,7 @@ jobs:
     steps:
       - id: set-matrix
         run: |      
+          ls
           configFile="config.json"
 
           if [ "${{ inputs.testSuites }}" == "All" ]
