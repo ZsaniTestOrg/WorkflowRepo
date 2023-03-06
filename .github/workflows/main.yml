@@ -63,6 +63,10 @@ jobs:
             echo "Single"
           fi
 
+      - name: Using the previously defined environment variable
+        run: |
+          echo ${{ env.CONFIGURATIONS }} 
+
         
       # - name: Log output
       #   run: |
@@ -75,13 +79,13 @@ jobs:
 # echo "CONFIGURATIONS=$(jq '.[] | select(.name=="${{ inputs.testSuites }}")' $configFile)" >> $GITHUB_ENV
 
 
-  Run_TestSuite:
-    needs: [ 'Prebuild' ]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        configurations: ${{fromJSON(needs.Prebuild.outputs.configurations)}}
-    steps:
-      - name: running
-        run: echo "running job with ${{ matrix.configurations.name }}"
+  # Run_TestSuite:
+  #   needs: [ 'Prebuild' ]
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       configurations: ${{fromJSON(needs.Prebuild.outputs.configurations)}}
+  #   steps:
+  #     - name: running
+  #       run: echo "running job with ${{ matrix.configurations.name }}"
