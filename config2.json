@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Test1",
+        "dataSources" : [
+            "DataSource=1",
+            "SpecialSource=1"
+        ]
+    },
+    {
+        "name": "Test2",
+        "dataSources" : [
+            "DataSource=1",
+            "SpecialSource=2"
+        ]
+    },
+    {
+        "name": "Test3",
+        "dataSources" : [
+            "DataSource=1"
+        ]
+    },
+    {
+        "name": "Test4",
+        "dataSources" : [
+            "DataSource=1"
+        ]
+    },
+    {
+        "name": "Test5",
+        "dataSources" : [
+            "DataSource=1"
+        ]
+    }
+]

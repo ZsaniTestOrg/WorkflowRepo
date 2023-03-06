@@ -44,14 +44,14 @@ jobs:
 
       - id: set-matrix
         run: |      
-          configFile="config.json"
+          configFile="config2.json"
 
           cat $configFile | jq '.[]' | sed -e 's:\":\\":g'
 
           if [ "${{ inputs.testSuites }}" == "All" ]
           then 
             echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
-            echo "CONFIGURATIONS=$( echo "[ $(cat $configFile | jq -c '.[]' ) ]" )" >> $GITHUB_ENV
+            echo "CONFIGURATIONS=$(cat $configFile | jq -c )" >> $GITHUB_ENV
             echo "All"
           else
             echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
