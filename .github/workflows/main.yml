@@ -23,12 +23,11 @@ jobs:
       tests: ${{ env.TESTS }}
       configurations: ${{ env.CONFIGURATIONS }}
     steps:
-      - name: Checkout BoardsServices Github Repo
+      - name: Checkout Github Repo
         uses: actions/checkout@v3
 
       - id: set-matrix
         run: |      
-          ls
           configFile="config.json"
 
           if [ "${{ inputs.testSuites }}" == "All" ]
@@ -41,7 +40,9 @@ jobs:
             echo "CONFIGURATIONS=$(jq '.[] | select(.name==\"${{ inputs.testSuites }}\")' $configFile)" >> $GITHUB_ENV
             echo "Single"
           fi
-      - run: |
+
+      - name: Log output
+        run: |
           echo ${{ env.TESTS }}
           echo ${{ env.CONFIGURATIONS }}
 
