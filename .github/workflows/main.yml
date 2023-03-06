@@ -37,7 +37,7 @@ jobs:
           if [ "${{ inputs.testSuites }}" == "All" ]
           then 
             echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
-            echo "CONFIGURATIONS=$(cat $configFile)" >> $GITHUB_ENV          
+            echo "CONFIGURATIONS=$(cat $configFile | | sed -e 's:\":\\":g')" >> $GITHUB_ENV          
             echo "All"
           else
             echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
