@@ -51,11 +51,7 @@ jobs:
           if [ "${{ inputs.testSuites }}" == "All" ]
           then 
             echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
-
-            echo "CONFIGURATIONS<<EOF" >> $GITHUB_ENV
-            echo "[ $(cat $configFile | jq -c '.[]' | sed -e 's:\":\\":g') ]" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-       
+            echo "CONFIGURATIONS=$( echo "[ $(cat $configFile | jq -c '.[]' ) ]" )" >> $GITHUB_ENV
             echo "All"
           else
             echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
