@@ -54,13 +54,13 @@ jobs:
 # echo "CONFIGURATIONS=$(jq '.[] | select(.name=="${{ inputs.testSuites }}")' $configFile)" >> $GITHUB_ENV
 
 
-  # Run_TestSuite:
-  #   needs: [ 'Prebuild' ]
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       test: ${{fromJSON(needs.Prebuild.outputs.tests)}}
-  #   steps:
-  #     - name: running
-  #       run: echo "running job with ${{ matrix.test }}"
+  Run_TestSuite:
+    needs: [ 'Prebuild' ]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configurations: ${{fromJSON(needs.Prebuild.outputs.configurations)}}
+    steps:
+      - name: running
+        run: echo "running job with ${{ matrix.configurations }}"
