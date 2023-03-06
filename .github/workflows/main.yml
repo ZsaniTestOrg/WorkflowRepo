@@ -29,7 +29,7 @@ jobs:
       - id: set-matrix
         run: |      
           configFile="config.json"
-          jq '.[]' $configFile
+          echo "CONFIGURATIONS=$(jq '.[]' $configFile)" >> $GITHUB_ENV
 
         
       - name: Log output
