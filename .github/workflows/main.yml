@@ -53,7 +53,7 @@ jobs:
             echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
 
             echo "CONFIGURATIONS<<EOF" >> $GITHUB_ENV
-            echo "[ $(cat $configFile | jq '.[]' | sed -e 's:\":\\":g') ]" >> $GITHUB_ENV
+            echo "[ $(cat $configFile | jq -c '.[]' | sed -e 's:\":\\":g') ]" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
        
             echo "All"
@@ -61,7 +61,7 @@ jobs:
             echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
 
             echo "CONFIGURATIONS<<EOF" >> $GITHUB_ENV
-            cat $configFile | jq '.[] | select(.name=="${{ inputs.testSuites }}")' >> $GITHUB_ENV
+            cat $configFile | jq -c '.[] | select(.name=="${{ inputs.testSuites }}")' >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
 
             echo "Single"
