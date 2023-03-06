@@ -26,29 +26,45 @@ jobs:
       - name: Checkout Github Repo
         uses: actions/checkout@v3
 
-      - id: set-matrix
-        run: |      
-          configFile="config.json"
 
-          cat $configFile | jq '.[]' | sed -e 's:\":\\":g'
+      - name: Defining a new Environment Variable
+        run: |                          
+          MULTI_LINES_TEXT="this is line one \n
+                            this is line two \n
+                            this is line three \n"    
+
+          echo "MULTI_LINES_TEXT_ENV_VAR<<EOF" >> $GITHUB_ENV
+          # here we can place the command that will generate multi-line text
+          echo $MULTI_LINES_TEXT >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+      - name: Using the previously defined environment variable
+        run: |
+          echo ${{ env.ONE_LINE_TEXT_ENV_VAR }}
+
+      # - id: set-matrix
+      #   run: |      
+      #     configFile="config.json"
+
+      #     cat $configFile | jq '.[]' | sed -e 's:\":\\":g'
 
 
-          if [ "${{ inputs.testSuites }}" == "All" ]
-          then 
-            echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
-            echo "CONFIGURATIONS=$(cat $configFile | jq '.[]' | sed -e 's:\":\\":g')" >> $GITHUB_ENV          
-            echo "All"
-          else
-            echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
-            echo "CONFIGURATIONS=$( echo "[ { "name": "Test3", "dataSources": [ "DataSource=1" ] } ]" )" >> $GITHUB_ENV
-            echo "Single"
-          fi
+      #     if [ "${{ inputs.testSuites }}" == "All" ]
+      #     then 
+      #       echo "TESTS=[\"Test1\",\"Test2\",\"Test3\",\"Test4\",\"Test5\"]" >> $GITHUB_ENV 
+      #       echo "CONFIGURATIONS=$(cat $configFile | jq '.[]' | sed -e 's:\":\\":g')" >> $GITHUB_ENV          
+      #       echo "All"
+      #     else
+      #       echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
+      #       echo "CONFIGURATIONS=$( echo "[ { "name": "Test3", "dataSources": [ "DataSource=1" ] } ]" )" >> $GITHUB_ENV
+      #       echo "Single"
+      #     fi
 
         
-      - name: Log output
-        run: |
-          echo ${{ env.TESTS }}
-          echo ${{ env.CONFIGURATIONS }}
+      # - name: Log output
+      #   run: |
+      #     echo ${{ env.TESTS }}
+      #     echo ${{ env.CONFIGURATIONS }}
 
 # echo "CONFIGURATIONS=$( echo "[ { \"name\": \"Test3\", \"dataSources\": [ \"DataSource=1\" ] } ]" )" >> $GITHUB_ENV
 # echo "CONFIGURATIONS=$(jq '.[] | select(.name=="${{ inputs.testSuites }}")' $configFile)" >> $GITHUB_ENV
