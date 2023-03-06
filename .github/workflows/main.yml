@@ -59,13 +59,12 @@ jobs:
             echo "All"
           else
             echo "TESTS=[\"${{ inputs.testSuites }}\"]" >> $GITHUB_ENV
-
-            echo "CONFIGURATIONS<<EOF" >> $GITHUB_ENV
-            cat $configFile | jq -c '.[] | select(.name=="${{ inputs.testSuites }}")' >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-
+            echo "CONFIGURATIONS=$( echo "[ $(cat $configFile | jq -c '.[] | select(.name=="${{ inputs.testSuites }}")' ) ]" ) >> $GITHUB_ENV
             echo "Single"
           fi
+
+      - run: |
+          echo ${{ env.CONFIGURATIONS }}
 
 # All: echo "CONFIGURATIONS=$(cat $configFile | jq '.[]' | sed -e 's:\":\\":g')" >> $GITHUB_ENV   
 # echo "CONFIGURATIONS=$( echo "[ { \"name\": \"Test3\", \"dataSources\": [ \"DataSource=1\" ] } ]" )" >> $GITHUB_ENV
