@@ -63,4 +63,4 @@ jobs:
         configurations: ${{fromJSON(needs.Prebuild.outputs.configurations)}}
     steps:
       - name: running
-        run: echo "running job with ${{ matrix.configurations }}"
+        run: echo "running job with ${{ matrix.configurations.name }}"
